@@ -1,28 +1,23 @@
+version: '5.0.2'
+
 services:
-  mongo:
-    image: mongo:latest
+  db:
+    image: mariadb:latest
     container_name: ram-ms-logger-db
     restart: always
-    ports:
-      - '27017:27017'
     environment:
-      MONGO_INITDB_ROOT_USERNAME: logger
-      MONGO_INITDB_ROOT_PASSWORD: ramloggerpassword
+      MARIADB_ROOT_PASSWORD: ram_password
+      MARIADB_DATABASE: ram-ms-logger-db
+      MARIADB_USER: user
+      MARIADB_PASSWORD: ram_password
+    ports:
+      - "3306:3306"
     volumes:
-      - mongo-data:/data/db
-  backend:
-    build: .
-    container_name: ram-ms-logger
-    restart: unless-stopped
+      - mariadb_data:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - '3001:3001'
-    env_file:
-      - .env.production
-    depends_on:
-      - mongo
-    environment:
-      - NODE_ENV=production
-    profiles:
-      - prod
+      - "8080:8080"
 volumes:
-  mongo-data:
+  mariadb_data:
