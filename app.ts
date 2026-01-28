@@ -1,11 +1,29 @@
+import cors from 'cors';
 import express from 'express';
 
-const app = express();
-const port = 3001; //TODO: use .env
+import { LoggerController } from './controllers/loggerController';
+import { LoggerRouter } from './routes/loggerRouter';
+import { LoggerService } from './services/loggerService';
+import { config } from './utils/config';
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+const app = express();
+const port = config.PORT;
+app.use(
+  cors({
+    origin: [
+      'http://localhost:8081',
+      'http://localhost:5173',
+      'http://localhost:3004',
+    ],
+    credentials: true,
+  })
+);
+app.use(express.json());
+
+const loggerService = new LoggerService();
+const loggerController = new LoggerController(loggerService);
+
+app.use('/logs', new LoggerRouter(loggerController).router);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

@@ -13,12 +13,6 @@ datasource db {
   provider = "mysql"
 }
 
-model Microservice {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  logs Log[]
-}
-
 enum ActionType {
   INSERT
   REMOVE
@@ -33,15 +27,24 @@ enum LogLevel {
   ERROR
 }
 
-model Log {
-  id             Int          @id @default(autoincrement())
-  microserviceId Int
-  microservice   Microservice @relation(fields: [microserviceId], references: [id])
-  action         ActionType
-  level          LogLevel
-  timestamp      DateTime     @default(now())
-  message        String
+enum MicroserviceType {
+  USER
+  EFFECT
+  BATTLE
+  LOGGER
+  PLAYER
+  ENEMY
+  GAME
+  ITEM
+}
 
-  @@index([microserviceId])
+model Log {
+  id           Int              @id @default(autoincrement())
+  microservice MicroserviceType
+  action       ActionType
+  level        LogLevel
+  timestamp    DateTime         @default(now())
+  message      String
+
   @@index([timestamp])
 }

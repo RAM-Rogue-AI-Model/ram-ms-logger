@@ -10,7 +10,9 @@
     "start": "node dist/app.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "fixer": "pnpm format && pnpm lint --fix"
+    "fixer": "pnpm format && pnpm lint --fix",
+    "prisma:generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",

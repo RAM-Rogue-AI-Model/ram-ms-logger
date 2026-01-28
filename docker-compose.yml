@@ -11,13 +11,13 @@ services:
       MARIADB_USER: user
       MARIADB_PASSWORD: ram_password
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - mariadb_data:/var/lib/mysql
   adminer:
     image: adminer
     restart: always
     ports:
-      - "8080:8080"
+      - '8080:8080'
 volumes:
   mariadb_data:
