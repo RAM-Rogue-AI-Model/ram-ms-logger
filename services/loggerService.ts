@@ -6,7 +6,14 @@ import { prisma } from '../utils/mariaConnection';
 
 class LoggerService {
   async create(data: CreateLogInput) {
-    return prisma.log.create({ data: data });
+      const dataSecured = {
+            microservice: data.microservice,
+            action: data.action,
+            level: data.level,
+            message: data.message,
+            timestamp: data.timestamp || new Date(),
+      }
+    return prisma.log.create({ data: dataSecured });
   }
 
   async list() {

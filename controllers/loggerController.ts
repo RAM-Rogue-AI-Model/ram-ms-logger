@@ -13,10 +13,14 @@ class LoggerController {
   }
   async create(req: Request, res: Response) {
     try {
-        if(!req.body.microservice || !req.body.action || !req.body.level || !req.body.message){
+        const body = req.body as Partial<CreateLogInput>;
+        if (!body.microservice || !body.action || !body.level || !body.message) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
-      const payload : CreateLogInput  = req.body;
+        if (!isMicroserviceType(body.microservice)) {
+            return res.status(400).json({ error: 'Invalid microservice' });
+        }
+      const payload : CreateLogInput  = body as CreateLogInput;
       const log = await this.service.create(payload);
       res.status(201).json(log);
     } catch (error) {
@@ -26,11 +30,11 @@ class LoggerController {
   }
 
   async getByMicroservice(req: Request, res: Response) {
-    const isMicroserviceValid = isMicroserviceType(req.params.microservice);
-    if (!isMicroserviceValid) {
-      return res.status(400).json({ error: 'Invalid microservice type' });
-    }
-    const micro: MicroserviceType = req.params.microservice as MicroserviceType;
+      const microServiceParam = req.params.microservice;
+      if (!isMicroserviceType(microServiceParam)) {
+          return res.status(400).json({ error: 'Invalid microservice type' });
+      }
+    const micro: MicroserviceType = microServiceParam as MicroserviceType;
     const date = parseDateQuery(req.query.date);
     let logs;
     if (date) {

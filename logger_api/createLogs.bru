@@ -1,0 +1,27 @@
+meta {
+  name: createLogs
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3001/logs
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": 1,
+    "timestamp": "2023-01-01T12:34:56.789Z",
+    "microservice": "USER",
+    "action": "INSERT",
+    "level": "INFO",
+    "message": "User created"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -12,4 +12,15 @@ const adapter = new PrismaMariaDb({
   connectionLimit: 5,
 });
 const prisma = new PrismaClient({ adapter });
+
+(async () => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    // eslint-disable-next-line no-console
+    console.log('Connected to MariaDB successfully');
+  } catch (err: any) {
+    console.error('Failed to connect to MariaDB on startup:', err?.message ?? err);
+  }
+})();
+
 export { prisma };
