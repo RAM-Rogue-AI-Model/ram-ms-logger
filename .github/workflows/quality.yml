@@ -10,7 +10,7 @@ jobs:
   quality-check:
     uses: RAM-Rogue-AI-Model/ram-infra/.github/workflows/reusable-sonar.yml@main
     with:
-      project_key: RAM-Rogue-AI-Model_ram-ms-battle
+      project_key: RAM-Rogue-AI-Model_ram-ms-logger
       sources: "."
       tests: "."
     secrets:
