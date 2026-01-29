@@ -4,7 +4,7 @@ import 'dotenv/config';
 
 import { defineConfig } from 'prisma/config';
 
-import { config } from './utils/config';
+import { config } from './src/utils/config';
 
 export default defineConfig({
   schema: 'prisma/schema.prisma',

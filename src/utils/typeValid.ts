@@ -1,4 +1,4 @@
-import { MicroserviceType } from '../generated/prisma/enums';
+import { MicroserviceType } from '../../generated/prisma/enums';
 
 function isMicroserviceType(value: unknown): value is MicroserviceType {
   return (

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { MicroserviceType } from '../generated/prisma/enums';
+import { MicroserviceType } from '../../generated/prisma/enums';
 import { LoggerService } from '../services/loggerService';
 import {CreateLogInput} from "../types/loginput";
 import { isMicroserviceType, parseDateQuery } from '../utils/typeValid';

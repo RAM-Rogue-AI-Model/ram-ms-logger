@@ -1,6 +1,6 @@
 import {
   MicroserviceType,
-} from '../generated/prisma/enums';
+} from '../../generated/prisma/enums';
 import {CreateLogInput} from "../types/loginput";
 import { prisma } from '../utils/mariaConnection';
 

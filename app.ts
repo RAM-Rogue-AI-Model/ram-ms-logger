@@ -2,10 +2,10 @@ import 'dotenv/config';
 
 import express from 'express';
 
-import { LoggerController } from './controllers/loggerController';
-import { LoggerRouter } from './routes/loggerRouter';
-import { LoggerService } from './services/loggerService';
-import { config } from './utils/config';
+import { LoggerController } from './src/controllers/loggerController';
+import { LoggerRouter } from './src/routes/loggerRouter';
+import { LoggerService } from './src/services/loggerService';
+import { config } from './src/utils/config';
 
 const app = express();
 const port = config.PORT;
