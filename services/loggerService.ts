@@ -11,7 +11,7 @@ class LoggerService {
             action: data.action,
             level: data.level,
             message: data.message,
-            timestamp: data.timestamp || new Date(),
+            timestamp: data.timestamp ?? new Date(),
       }
     return prisma.log.create({ data: dataSecured });
   }

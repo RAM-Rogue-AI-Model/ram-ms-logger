@@ -1,6 +1,7 @@
-import cors from 'cors';
-import express from 'express';
 import 'dotenv/config';
+
+import express from 'express';
+
 import { LoggerController } from './controllers/loggerController';
 import { LoggerRouter } from './routes/loggerRouter';
 import { LoggerService } from './services/loggerService';

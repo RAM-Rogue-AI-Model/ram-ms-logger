@@ -34,7 +34,7 @@ class LoggerController {
       if (!isMicroserviceType(microServiceParam)) {
           return res.status(400).json({ error: 'Invalid microservice type' });
       }
-    const micro: MicroserviceType = microServiceParam as MicroserviceType;
+    const micro: MicroserviceType = microServiceParam;
     const date = parseDateQuery(req.query.date);
     let logs;
     if (date) {
