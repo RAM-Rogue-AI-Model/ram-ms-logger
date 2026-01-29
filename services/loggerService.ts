@@ -1,41 +1,57 @@
 import {
-  ActionType,
-  LogLevel,
   MicroserviceType,
 } from '../generated/prisma/enums';
+import {CreateLogInput} from "../types/loginput";
 import { prisma } from '../utils/mariaConnection';
-
-interface CreateLogInput {
-  microservice: MicroserviceType;
-  action: ActionType;
-  level: LogLevel;
-  message: string;
-  timestamp?: Date;
-}
 
 class LoggerService {
   async create(data: CreateLogInput) {
-    return await prisma.log.create({ data: data });
-  }
-
-  async get(id: number) {
-    return prisma.log.findUnique({ where: { id } });
+    return prisma.log.create({ data: data });
   }
 
   async list() {
     return prisma.log.findMany();
   }
 
-  async update(
-    id: number,
-    patch: Partial<{
-      action: ActionType;
-      level: LogLevel;
-      message: string;
-      timestamp: Date;
-    }>
-  ) {
-    return prisma.log.update({ where: { id }, data: patch });
+  async getByDate(date: Date) {
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+
+    return prisma.log.findMany({
+      where: {
+        timestamp: {
+          gte: start,
+          lte: end,
+        },
+      },
+    });
+  }
+
+  async getByMicroservice(microservice: MicroserviceType) {
+    return prisma.log.findMany({
+      where: {
+        microservice: microservice,
+      },
+    });
+  }
+
+  async getByMicroserviceAndDate(microservice: MicroserviceType, date: Date) {
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+
+    return prisma.log.findMany({
+      where: {
+        microservice: microservice,
+        timestamp: {
+          gte: start,
+          lte: end,
+        },
+      },
+    });
   }
 }
 

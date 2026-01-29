@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 
+import { MicroserviceType } from '../generated/prisma/enums';
 import { LoggerService } from '../services/loggerService';
+import {CreateLogInput} from "../types/loginput";
+import { isMicroserviceType, parseDateQuery } from '../utils/typeValid';
 
 class LoggerController {
   service: LoggerService;
@@ -10,34 +13,43 @@ class LoggerController {
   }
   async create(req: Request, res: Response) {
     try {
-      const payload = req.body;
+        if(!req.body.microservice || !req.body.action || !req.body.level || !req.body.message){
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+      const payload : CreateLogInput  = req.body;
       const log = await this.service.create(payload);
       res.status(201).json(log);
-    } catch (e: any) {
-      res.status(400).json({ error: e.message });
+    } catch (error) {
+        console.error(error);
+      res.status(400);
     }
   }
 
-  async getOne(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const log = await this.service.get(id);
-    if (!log) return res.status(404).json({ error: 'Not found' });
-    res.json(log);
-  }
-
-  async list(req: Request, res: Response) {
-    const logs = await this.service.list();
+  async getByMicroservice(req: Request, res: Response) {
+    const isMicroserviceValid = isMicroserviceType(req.params.microservice);
+    if (!isMicroserviceValid) {
+      return res.status(400).json({ error: 'Invalid microservice type' });
+    }
+    const micro: MicroserviceType = req.params.microservice as MicroserviceType;
+    const date = parseDateQuery(req.query.date);
+    let logs;
+    if (date) {
+      logs = await this.service.getByMicroserviceAndDate(micro, date);
+    } else {
+      logs = await this.service.getByMicroservice(micro);
+    }
     res.json(logs);
   }
 
-  async update(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    try {
-      const updated = await this.service.update(id, req.body);
-      res.json(updated);
-    } catch (e: any) {
-      res.status(400).json({ error: e.message });
+  async list(req: Request, res: Response) {
+    const date = parseDateQuery(req.query.date);
+    let logs;
+    if (date) {
+      logs = await this.service.getByDate(date);
+    } else {
+      logs = await this.service.list();
     }
+    res.json(logs);
   }
 }
 

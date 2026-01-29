@@ -17,14 +17,9 @@ class LoggerRouter {
         await loggerController.list(req, res);
       });
 
-    this.router
-      .route('/:id')
-      .get(async (req, res) => {
-        await loggerController.getOne(req, res);
-      })
-      .put(async (req, res) => {
-        await loggerController.update(req, res);
-      });
+    this.router.route('/:microservice').get(async (req, res) => {
+      await loggerController.getByMicroservice(req, res);
+    });
   }
 }
 
