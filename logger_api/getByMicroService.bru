@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: http://localhost:3001/logs/USER
+  url: http://localhost:3001/logs/:microservice
   body: none
   auth: inherit
+}
+
+params:path {
+  microservice: ENEMY
 }
 
 settings {
