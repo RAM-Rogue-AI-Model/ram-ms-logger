@@ -39,7 +39,7 @@ enum MicroserviceType {
 }
 
 model Log {
-  id           Int              @id @default(autoincrement())
+  id           String           @id @default(uuid())
   microservice MicroserviceType
   action       ActionType
   level        LogLevel
