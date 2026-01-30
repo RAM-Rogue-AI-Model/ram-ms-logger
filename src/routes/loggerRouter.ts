@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 
 import { LoggerController } from '../controllers/loggerController';
+import {authenticate} from "../utils/auth";
 
 class LoggerRouter {
   public router: Router;
@@ -10,14 +11,15 @@ class LoggerRouter {
 
     this.router
       .route('/')
-      .post(async (req, res) => {
+      .post(authenticate, async (req, res) => {
         await loggerController.create(req, res);
       })
-      .get(async (req, res) => {
+      .get(authenticate, async (req, res) => {
         await loggerController.list(req, res);
       });
 
-    this.router.route('/:microservice').get(async (req, res) => {
+    this.router.route('/:microservice')
+        .get(authenticate, async (req, res) => {
       await loggerController.getByMicroservice(req, res);
     });
   }
