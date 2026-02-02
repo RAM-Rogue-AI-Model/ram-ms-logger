@@ -1,11 +1,15 @@
-import {ActionType, LogLevel,MicroserviceType} from "../../generated/prisma/enums";
+import {
+  ActionType,
+  LogLevel,
+  MicroserviceType,
+} from '../../generated/prisma/enums';
 
 interface CreateLogInput {
-    microservice: MicroserviceType;
-    action: ActionType;
-    level: LogLevel;
-    message: string;
-    timestamp?: Date;
+  microservice: MicroserviceType;
+  action: ActionType;
+  level: LogLevel;
+  message: string;
+  timestamp?: Date;
 }
 
 export { CreateLogInput };
