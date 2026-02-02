@@ -1,18 +1,16 @@
-import {
-  MicroserviceType,
-} from '../../generated/prisma/enums';
-import {CreateLogInput} from "../types/loginput";
+import { MicroserviceType } from '../../generated/prisma/enums';
+import { CreateLogInput } from '../types/loginput';
 import { prisma } from '../utils/mariaConnection';
 
 class LoggerService {
   async create(data: CreateLogInput) {
-      const dataSecured = {
-            microservice: data.microservice,
-            action: data.action,
-            level: data.level,
-            message: data.message,
-            timestamp: data.timestamp ?? new Date(),
-      }
+    const dataSecured = {
+      microservice: data.microservice,
+      action: data.action,
+      level: data.level,
+      message: data.message,
+      timestamp: data.timestamp ?? new Date(),
+    };
     return prisma.log.create({ data: dataSecured });
   }
 
@@ -59,6 +57,9 @@ class LoggerService {
         },
       },
     });
+  }
+  async deleteAll() {
+    return prisma.log.deleteMany();
   }
 }
 

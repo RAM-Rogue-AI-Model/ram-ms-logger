@@ -16,7 +16,11 @@ class LoggerRouter {
       })
       .get(authenticate, async (req, res) => {
         await loggerController.list(req, res);
-      });
+      })
+
+      .delete(authenticate, async (req, res) => {
+        await loggerController.deleteAll(req, res);
+      }); 
 
     this.router.route('/:microservice')
         .get(authenticate, async (req, res) => {

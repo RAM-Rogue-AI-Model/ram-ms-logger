@@ -44,7 +44,7 @@ model Log {
   action       ActionType
   level        LogLevel
   timestamp    DateTime         @default(now())
-  message      String
+  message      String @db.Text
 
   @@index([timestamp])
 }
