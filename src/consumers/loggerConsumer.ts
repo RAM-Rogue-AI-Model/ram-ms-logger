@@ -2,7 +2,7 @@ import amqp from 'amqplib';
 import { LoggerService } from '../services/loggerService';
 
 const RABBITMQ_URL =
-  process.env.RABBITMQ_URL || 'amqp://guest:guest@localhost:5672';
+  process.env.RABBITMQ_URL || 'amqp://guest:guest@rabbitmq_test:5672';
 
 const QUEUE = 'create_log_queue';
 
