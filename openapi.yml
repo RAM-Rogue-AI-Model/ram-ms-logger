@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: RAM Logger API
+  version: 1.0.0
+  description: API de gestion des logs pour les microservices RAM
+servers:
+  - url: http://localhost:3007
+paths:
+  /logs:
+    get:
+      summary: Liste tous les logs
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Filtrer les logs par date (YYYY-MM-DD)
+      responses:
+        '200':
+          description: Liste des logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Log'
+    post:
+      summary: Crée un nouveau log
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLogInput'
+      responses:
+        '201':
+          description: Log créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Log'
+    delete:
+      summary: Supprime tous les logs
+      responses:
+        '200':
+          description: Nombre de logs supprimés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deletedCount:
+                    type: integer
+  /logs/{microservice}:
+    get:
+      summary: Liste les logs d'un microservice
+      parameters:
+        - in: path
+          name: microservice
+          required: true
+          schema:
+            $ref: '#/components/schemas/MicroserviceType'
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Filtrer les logs par date (YYYY-MM-DD)
+      responses:
+        '200':
+          description: Liste des logs du microservice
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Log'
+components:
+  schemas:
+    Log:
+      type: object
+      properties:
+        id:
+          type: integer
+        microservice:
+          $ref: '#/components/schemas/MicroserviceType'
+        action:
+          $ref: '#/components/schemas/ActionType'
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    CreateLogInput:
+      type: object
+      required:
+        - microservice
+        - action
+        - level
+        - message
+      properties:
+        microservice:
+          $ref: '#/components/schemas/MicroserviceType'
+        action:
+          $ref: '#/components/schemas/ActionType'
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    MicroserviceType:
+      type: string
+      enum:
+        - USER
+        - AUTH
+        - PAYMENT
+        - NOTIFICATION
+        - LOGGER
+    ActionType:
+      type: string
+      enum:
+        - CREATE
+        - UPDATE
+        - DELETE
+        - READ
+        - LOGIN
+        - LOGOUT
+    LogLevel:
+      type: string
+      enum:
+        - INFO
+        - WARN
+        - ERROR
+        - DEBUG
