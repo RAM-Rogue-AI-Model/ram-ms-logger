@@ -10,12 +10,12 @@ services:
     env_file:
       - .env
     depends_on:
-      db:
+      logger-db:
         condition: service_healthy
     networks:
       - ram-shared-network
 
-  db:
+  logger-db:
     image: mariadb:latest
     container_name: ram-ms-logger-db
     restart: unless-stopped
