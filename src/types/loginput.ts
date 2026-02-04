@@ -12,4 +12,12 @@ interface CreateLogInput {
   timestamp?: Date;
 }
 
-export { CreateLogInput };
+export { CreateLogInput, LogMessageJson };
+
+interface LogMessageJson {
+  microservice: MicroserviceType;
+  action: ActionType;
+  level: LogLevel;
+  message: string;
+  timestamp?: string;
+}
