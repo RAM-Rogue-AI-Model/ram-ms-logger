@@ -1,7 +1,6 @@
-import 'dotenv/config';
-
 import fs from 'node:fs';
 
+import cors from 'cors';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import * as YAML from 'yaml';
@@ -17,8 +16,14 @@ const port = config.PORT;
 
 app.use(express.json());
 
-const loggerService = new LoggerService();
+app.use(
+  cors({
+    origin: [config.API_GATEWAY_URL],
+    credentials: true,
+  })
+);
 
+const loggerService = new LoggerService();
 const loggerController = new LoggerController(loggerService);
 
 app.use('/logs', new LoggerRouter(loggerController).router);

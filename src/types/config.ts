@@ -1,5 +1,6 @@
 interface configType {
   PORT: number;
+  API_GATEWAY_URL: string;
   DATABASE_URL: string;
   DATABASE_PORT: number;
   DATABASE_HOST: string;
