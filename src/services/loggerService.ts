@@ -15,7 +15,13 @@ class LoggerService {
   }
 
   async list() {
-    return prisma.log.findMany();
+    const logs = await prisma.log.findMany({
+      orderBy: {
+        timestamp: 'desc',
+      },
+      take: 50,
+    });
+    return logs;
   }
 
   async getByDate(date: Date) {
@@ -30,6 +36,10 @@ class LoggerService {
           gte: start,
           lte: end,
         },
+      },
+      take: 50,
+      orderBy: {
+        timestamp: 'desc',
       },
     });
   }
